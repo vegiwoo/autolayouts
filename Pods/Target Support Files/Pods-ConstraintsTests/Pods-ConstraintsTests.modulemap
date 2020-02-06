@@ -1,0 +1,6 @@
+framework module Pods_ConstraintsTests {
+  umbrella header "Pods-ConstraintsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
