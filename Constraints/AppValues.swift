@@ -21,6 +21,9 @@ final class AppValues {
     
     static var buttonTitleFontSize : CGFloat {get {return sizeСalculation(value: 18.0)}}
     
+    static var cornerRadius : CGFloat {get {return sizeСalculation(value: 20)}}
+    static var roudedElementHeight : CGFloat {get{return sizeСalculation(value: 40)}}
+    
     private init () {}
     
     static fileprivate func sizeСalculation (value : CGFloat) -> CGFloat {

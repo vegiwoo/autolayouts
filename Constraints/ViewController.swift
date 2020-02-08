@@ -20,13 +20,12 @@ class ViewController: UIViewController {
     }
     
     var horConst = [Constraints]()
-    var verticalConstraints   = [Constraints]()
+    var vertConst   = [Constraints]()
     
     let offset : CGFloat = 20.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         currentDeviceOrientation = UIDevice.current.orientation
         setupViews(orientation: currentDeviceOrientation!)
@@ -53,14 +52,6 @@ class ViewController: UIViewController {
     var stackView : UIView = {
         let uv = UIView()
         uv.backgroundColor = #colorLiteral(red: 0.1411764706, green: 0.7764705882, blue: 0.8470588235, alpha: 1)
-        uv.translatesAutoresizingMaskIntoConstraints = false
-        uv.clipsToBounds = true
-        return uv
-    }()
-    
-    var internalStackView : UIView = {
-        let uv = UIView()
-        uv.backgroundColor = .green
         uv.translatesAutoresizingMaskIntoConstraints = false
         uv.clipsToBounds = true
         return uv
@@ -95,7 +86,8 @@ class ViewController: UIViewController {
         field.textColor = UIColor(named: "yellow")
         field.backgroundColor = #colorLiteral(red: 0.1411764706, green: 0.5568627451, blue: 0.6470588235, alpha: 1)
         field.layer.borderColor = #colorLiteral(red: 0.9490196078, green: 0.8274509804, blue: 0.2156862745, alpha: 1)
-        field.layer.borderWidth = 1.0
+        field.layer.cornerRadius = AppValues.cornerRadius
+        field.layer.borderWidth = 1.5
         field.placeholder = "Something ..."
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clipsToBounds = true
@@ -109,7 +101,8 @@ class ViewController: UIViewController {
         field.backgroundColor = #colorLiteral(red: 0.1411764706, green: 0.5568627451, blue: 0.6470588235, alpha: 1)
         field.textColor = #colorLiteral(red: 0.9490196078, green: 0.8274509804, blue: 0.2156862745, alpha: 1)
         field.layer.borderColor = #colorLiteral(red: 0.9490196078, green: 0.8274509804, blue: 0.2156862745, alpha: 1)
-        field.layer.borderWidth = 1.0
+        field.layer.cornerRadius = AppValues.cornerRadius
+        field.layer.borderWidth = 1.5
         field.placeholder = "Something ..."
         field.translatesAutoresizingMaskIntoConstraints = false
         field.clipsToBounds = true
@@ -119,8 +112,8 @@ class ViewController: UIViewController {
     
     var button1 : UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.4588235294, blue: 0.1803921569, alpha: 1)
-        btn.layer.cornerRadius = 15
+        btn.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        btn.layer.cornerRadius = AppValues.cornerRadius
         btn.setTitle("Button1", for: .normal)
         btn.titleLabel?.font = UIFont(name: "PingFangHK-Medium", size: AppValues.buttonTitleFontSize)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -131,13 +124,33 @@ class ViewController: UIViewController {
     
     var button2 : UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.4588235294, blue: 0.1803921569, alpha: 1)
-        btn.layer.cornerRadius = 15
+        btn.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        btn.layer.cornerRadius = AppValues.cornerRadius
         btn.setTitle("Button2", for: .normal)
         btn.titleLabel?.font = UIFont(name: "PingFangHK-Medium", size: AppValues.buttonTitleFontSize)
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.clipsToBounds = true
         btn.fitTextToBounds()
         return btn
+    }()
+    
+    let internalButtonStack : UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 20
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
+        return stack
+    }()
+    
+    let externalStack  : UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.spacing = 10
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
+        return stack
     }()
 }

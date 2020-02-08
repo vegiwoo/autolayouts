@@ -21,6 +21,8 @@ extension ViewController {
     fileprivate func addSubviews() {
         if view.subviews.count == 0 {
             view.addSubview(containerView)
+            containerView.addSubview(imageView)
+            containerView.addSubview(externalStack)
         }
     }
     
@@ -28,63 +30,69 @@ extension ViewController {
         
         
         //MARK: General settings
-        var arrayToExternalStack = [UIView]()
         
         // Internal stack for buttons
-        internalStackView.stack([button1,button2], axis: .horizontal, width: nil, height: nil, spacing: offset / 2)
-        button1.width(to: internalStackView, multiplier: 0.45, offset: 0, relation: .equal, isActive: true)
-        button2.width(to: internalStackView, multiplier: 0.45, offset: 0, relation: .equal, isActive: true)
+        internalButtonStack.addArrangedSubview(button1)
+        internalButtonStack.addArrangedSubview(button2)
         
-        // External stack
-        arrayToExternalStack = [headerLabel, textfield1, textfield2, internalStackView]
-        
-        
-        stackView.stack(arrayToExternalStack, axis: .vertical, width: nil, height: -50, spacing: offset)
-        
+        button1.height(AppValues.roudedElementHeight)
+        button2.height(AppValues.roudedElementHeight)
+        textfield1.height(AppValues.roudedElementHeight)
+        textfield1.height(AppValues.roudedElementHeight)
+
+        externalStack.addArrangedSubview(headerLabel)
+        externalStack.addArrangedSubview(textfield1)
+        externalStack.addArrangedSubview(textfield2)
+        externalStack.addArrangedSubview(internalButtonStack)
+     
         // MARK: LandscapeRight
         if orientation == .landscapeRight {
-            
-            // DeActive vertical constraints
-            _ = verticalConstraints.forEach {const in _ = const.map{$0.isActive = false}}
-            
+
+            _ = vertConst.map{$0.map{$0.isActive = false}}
+        
             if horConst.count == 0 {
                 horConst = [Constraints]()
-                
-                //Create horizontal constraints
+
                 horConst.append(containerView.edgesToSuperview(excluding: .none, insets: .init(top: offset, left: offset, bottom: offset, right: offset), relation: .equal, isActive: false, usingSafeArea: true))
                 
-                horConst.append(containerView.stack([imageView, stackView], axis: .horizontal, width: nil, height: nil, spacing: offset))
-                horConst.append([imageView.width(to: containerView, multiplier: 0.4, offset: 0, relation: .equalOrLess,  isActive: false)])
-                horConst.append([stackView.width(to: containerView, multiplier: 0.6, offset: 0, relation: .equal,  isActive: false)])
-                horConst.append([])
+                horConst.append(imageView.edgesToSuperview(excluding: .right, insets: .init(top: 0, left: 0, bottom: 0, right: 0), relation: .equal, isActive: false, usingSafeArea: false))
+                horConst.append([imageView.width(to: containerView, multiplier: 0.4, offset: 0, relation: .equal, isActive: false)])
+                
+                horConst.append([externalStack.leftToRight(of: imageView, offset: 20, relation: .equalOrLess, isActive: false)])
+                horConst.append([externalStack.centerY(to: imageView)])
+                horConst.append([externalStack.rightToSuperview(offset: -20, relation: .equal, isActive: false)])
             }
-            
-            //Activate horizontal constraints
-            _ = horConst.forEach {const in _ = const.map{$0.isActive = true}}
-            
+
+             _ = horConst.map{$0.map{$0.isActive = true}}
+
             // MARK: Portrait
         } else {
-            // DeActive horizontal constraints
-            _ = horConst.forEach {const in _ = const.map{$0.isActive = false}}
-            
-            if verticalConstraints.count == 0 {
+
+            _ = horConst.map{$0.map{$0.isActive = false}}
+
+            if vertConst.count == 0 {
+
+                vertConst = [Constraints]()
+
+                // Container View
+                vertConst.append(containerView.edgesToSuperview(excluding: .none, insets: .init(top: 0, left: offset, bottom: offset, right: offset), relation: .equal, isActive: false, usingSafeArea: true))
                 
-                //Create vertical constraints
-                verticalConstraints = [Constraints]()
-                
-                verticalConstraints.append(containerView.edgesToSuperview(excluding: .none, insets: .init(top: 0, left: offset, bottom: offset, right: offset), relation: .equal, isActive: false, usingSafeArea: true))
-                
-                
-                let multiplier = UIDevice.current.userInterfaceIdiom == .phone ? (0.6, 0.4) :  (0.7, 0.3)
-                            
-                verticalConstraints.append(containerView.stack([imageView, stackView], axis: .vertical, width: nil, height: nil, spacing: offset))
-                verticalConstraints.append([imageView.height(to: containerView, multiplier: CGFloat(multiplier.0), offset: -10, relation: .equal,  isActive: false)])
-                verticalConstraints.append([stackView.height(to: containerView, multiplier: CGFloat(multiplier.1), offset: 0, relation: .equalOrGreater,  isActive: false)])
-                
+                // Image View
+                let multiplier : CGFloat = UIDevice.current.userInterfaceIdiom == .phone ? 0.65 : 0.7
+                vertConst.append(imageView.edgesToSuperview(excluding: .bottom, insets: .init(top: 0, left: 0, bottom: 0, right: 0), relation: .equal, isActive: false, usingSafeArea: false))
+                vertConst.append([imageView.height(to: containerView, multiplier: multiplier, offset: 0, relation: .equal, isActive: false)])
+    
+                // External Stack
+                vertConst.append([externalStack.leftToSuperview(),externalStack.rightToSuperview()])
+                vertConst.append([externalStack.topToBottom(of: imageView, offset: 20, relation: .equalOrLess, isActive: false)])
+                vertConst.append([externalStack.bottomToSuperview(offset: -20, relation: .equalOrLess, isActive: false, usingSafeArea: false)])
+//                vertConst.append([externalStack.rightToSuperview()])
+//                vertConst.append([externalStack.bottomToSuperview(offset: -10, relation: .equal, isActive: false)])
+
             }
-            //Activate vertical constraints
-            _ = verticalConstraints.forEach {const in _ = const.map{$0.isActive = true}}
-            
+       
+            _ = vertConst.map{$0.map{$0.isActive = true}}
+
         }
         
     }
