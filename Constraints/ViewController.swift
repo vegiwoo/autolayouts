@@ -17,20 +17,10 @@ class ViewController: UIViewController {
                 setupViews(orientation: newVal)
             }
         }
-        
-        
-//        didSet (value) {
-//
-//            if let newVal = value {
-//                setupViews(orientation: newVal)
-//            }
-//        }
     }
     
-    var horizontalConstraints = [Constraints]()
+    var horConst = [Constraints]()
     var verticalConstraints   = [Constraints]()
-    
-    //let idiom = UIDevice.current.userInterfaceIdiom
     
     let offset : CGFloat = 20.0
     
@@ -63,6 +53,14 @@ class ViewController: UIViewController {
     var stackView : UIView = {
         let uv = UIView()
         uv.backgroundColor = #colorLiteral(red: 0.1411764706, green: 0.7764705882, blue: 0.8470588235, alpha: 1)
+        uv.translatesAutoresizingMaskIntoConstraints = false
+        uv.clipsToBounds = true
+        return uv
+    }()
+    
+    var internalStackView : UIView = {
+        let uv = UIView()
+        uv.backgroundColor = .green
         uv.translatesAutoresizingMaskIntoConstraints = false
         uv.clipsToBounds = true
         return uv
